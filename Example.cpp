@@ -13,7 +13,7 @@ int main(int argc, char *argv[])
   Point2DVector points2D = Create2DPoints();
   Point3DVector points3D = Create3DPoints();
 
-  Eigen::MatrixXd P = ComputeP(points2D, points3D);
+  Eigen::MatrixXd P = ComputeP_NormalizedDLT(points2D, points3D);
 
   std::cout << "P: " << P << std::endl;
 
@@ -21,6 +21,12 @@ int main(int argc, char *argv[])
    1.3259e+01  -7.1752e+01   5.9339e+00  -5.8879e+00
    3.1995e+01  -9.5948e+00  -6.4394e+01  -8.9752e+00
    2.2462e-02  -4.7089e-03   2.3507e-03  -6.1825e-03
+ */
+
+  /* this program says:
+P:    -13.2592     71.7521    -5.93392     5.88788
+   -31.9947     9.59482     64.3943     8.97516
+ -0.0224625  0.00470891 -0.00235072  0.00618254
  */
 
   return 0;
