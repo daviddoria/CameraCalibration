@@ -19,6 +19,8 @@ Eigen::MatrixXd ComputeNormalizationTransform(const typename std::vector<T,typen
 
 Eigen::MatrixXd HomogeneousMultiply(const Point3DVector& points);
 
+Eigen::MatrixXd Reshape(const Eigen::VectorXd& vec, const unsigned int rows, const unsigned int cols);
+
 #include "CameraCalibration.hxx"
 
 #endif

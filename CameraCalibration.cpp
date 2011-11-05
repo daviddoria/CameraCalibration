@@ -78,17 +78,30 @@ Eigen::MatrixXd ComputeP_NormalizedDLT(const Point2DVector& points2D, const Poin
   Eigen::MatrixXd V = svd.matrixV();
   Eigen::MatrixXd lastColumnOfV = V.col(11);
 
-  Eigen::MatrixXd P(3,4);
-  for(unsigned int row = 0; row < 3; ++row)
-    {
-    for(unsigned int col = 0; col < 4; ++col)
-      {
-      P(row, col) = lastColumnOfV(row*4 + col);
-      }
-    }
+  Eigen::MatrixXd P = Reshape(lastColumnOfV, 3, 4);
     
   // Denormalization
   P = similarityTransform2D.inverse()*P*similarityTransform3D; // 3x3 * 3x4 * 4x4 = 4x4
+
+  return P;
+}
+
+Eigen::MatrixXd Reshape(const Eigen::VectorXd& vec, const unsigned int rows, const unsigned int cols)
+{
+  if(vec.rows() != rows*cols)
+    {
+    std::cerr << "Cannot reshape a vector with " << vec.rows() << " to a " << rows << " x " << cols << " matrix!" << std::endl;
+    exit(-1);
+    }
+
+  Eigen::MatrixXd P(rows,cols);
+  for(unsigned int row = 0; row < rows; ++row)
+    {
+    for(unsigned int col = 0; col < cols; ++col)
+      {
+      P(row, col) = vec(row*cols + col);
+      }
+    }
 
   return P;
 }
