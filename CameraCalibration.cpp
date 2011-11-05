@@ -2,41 +2,12 @@
 
 #include <iostream>
 
-Eigen::Vector2d Centroid(const Point2DVector& points)
-{
-  Eigen::Vector2d centroid(0.0f, 0.0f);
-
-  for(unsigned int i = 0; i < points.size(); ++i)
-    {
-    centroid += points[i];
-    }
-
-  float numberOfPoints = static_cast<float>(points.size());
-  centroid /= numberOfPoints;
-  
-  return centroid;
-}
-
-Eigen::Vector3d Centroid(const Point3DVector& points)
-{
-  Eigen::Vector3d centroid(0.0f, 0.0f, 0.0f);
-
-  for(unsigned int i = 0; i < points.size(); ++i)
-    {
-    centroid += points[i];
-    }
-
-  float numberOfPoints = static_cast<float>(points.size());
-  centroid /= numberOfPoints;
-
-  return centroid;
-}
 
 Eigen::MatrixXd ComputeNormalizationTransform(const Point2DVector& points)
 {
   unsigned int numberOfPoints = points.size();
 
-  Eigen::Vector2d centroid = Centroid(points);
+  Eigen::Vector2d centroid = Centroid<Eigen::Vector2d>(points);
 
   Point2DVector centeredPoints(numberOfPoints);
   // Shift the origin of the points to the centroid
@@ -78,7 +49,7 @@ Eigen::MatrixXd ComputeNormalizationTransform(const Point3DVector& points)
 {
   unsigned int numberOfPoints = points.size();
 
-  Eigen::Vector3d centroid = Centroid(points);
+  Eigen::Vector3d centroid = Centroid<Eigen::Vector3d>(points);
 
   Point3DVector centeredPoints(numberOfPoints);
   
