@@ -3,96 +3,6 @@
 #include <iostream>
 
 
-Eigen::MatrixXd ComputeNormalizationTransform(const Point2DVector& points)
-{
-  unsigned int numberOfPoints = points.size();
-
-  Eigen::Vector2d centroid = Centroid<Eigen::Vector2d>(points);
-
-  Point2DVector centeredPoints(numberOfPoints);
-  // Shift the origin of the points to the centroid
-  for(unsigned int i = 0; i < numberOfPoints; ++i)
-    {
-    centeredPoints[i] = points[i] - centroid;
-    }
-
-  // Compute the average distance
-  float totalDistance = 0.0f;
-  for(unsigned int i = 0; i < numberOfPoints; ++i)
-    {
-    totalDistance += centeredPoints[i].norm();
-    }
-
-  float averageDistance = totalDistance / static_cast<float>(numberOfPoints);
-
-  float scale = sqrt(2)/averageDistance;
-
-  // Similarity transforms
-  Eigen::MatrixXd similarityTransform(3,3);
-  similarityTransform(0,0) = scale;
-  similarityTransform(0,1) = 0;
-  similarityTransform(0,2) = -scale*centroid(0);
-  similarityTransform(1,0) = 0;
-  similarityTransform(1,1) = scale;
-  similarityTransform(1,2) = -scale*centroid(1);
-  similarityTransform(2,0) = 0;
-  similarityTransform(2,1) = 0;
-  similarityTransform(2,2) = 1;
-
-  std::cout << "SimilarityTransform: " << similarityTransform << std::endl;
-
-  return similarityTransform;
-  
-}
-
-Eigen::MatrixXd ComputeNormalizationTransform(const Point3DVector& points)
-{
-  unsigned int numberOfPoints = points.size();
-
-  Eigen::Vector3d centroid = Centroid<Eigen::Vector3d>(points);
-
-  Point3DVector centeredPoints(numberOfPoints);
-  
-  // Shift the origin of the points to the centroid
-  for(unsigned int i = 0; i < numberOfPoints; ++i)
-    {
-    centeredPoints[i] = points[i] - centroid;
-    }
-
-  // Normalize the points so that the average distance from the origin is equal to sqrt(2).
-  // Compute the average distance
-  float totalDistance = 0.0f;
-  for(unsigned int i = 0; i < numberOfPoints; ++i)
-    {
-    totalDistance += centeredPoints[i].norm();
-    }
-
-  float averageDistance = totalDistance / static_cast<float>(numberOfPoints);
-
-  float scale = sqrt(3)/averageDistance;
-
-  Eigen::MatrixXd similarityTransform(4,4);
-  similarityTransform(0,0) = scale;
-  similarityTransform(0,1) = 0;
-  similarityTransform(0,2) = 0;
-  similarityTransform(0,3) = -scale*centroid(0);
-  similarityTransform(1,0) = 0;
-  similarityTransform(1,1) = scale;
-  similarityTransform(1,2) = 0;
-  similarityTransform(1,3) = -scale*centroid(1);
-  similarityTransform(2,0) = 0;
-  similarityTransform(2,1) = 0;
-  similarityTransform(2,2) = scale;
-  similarityTransform(2,3) = -scale*centroid(2);
-  similarityTransform(3,0) = 0;
-  similarityTransform(3,1) = 0;
-  similarityTransform(3,2) = 0;
-  similarityTransform(3,3) = 1;
-
-  std::cout << "SimilarityTransform: " << similarityTransform << std::endl;
-  
-  return similarityTransform;
-}
 
 Eigen::MatrixXd ComputeP_NormalizedDLT(const Point2DVector& points2D, const Point3DVector& points3D)
 {
@@ -103,11 +13,13 @@ Eigen::MatrixXd ComputeP_NormalizedDLT(const Point2DVector& points2D, const Poin
     exit(-1);
     }
 
-  Eigen::MatrixXd similarityTransform2D = ComputeNormalizationTransform(points2D);
-  Eigen::MatrixXd similarityTransform3D = ComputeNormalizationTransform(points3D);
+  Eigen::MatrixXd similarityTransform2D = ComputeNormalizationTransform<Eigen::Vector2d>(points2D);
+  Eigen::MatrixXd similarityTransform3D = ComputeNormalizationTransform<Eigen::Vector3d>(points3D);
 
-  std::cout << "Computed similarity transforms." << std::endl;
-  
+//   std::cout << "Computed similarity transforms:" << std::endl;
+//   std::cout << "similarityTransform2D: " << similarityTransform2D << std::endl;
+//   std::cout << "similarityTransform3D: " << similarityTransform3D << std::endl;
+//   
   Point2DVector transformed2DPoints(numberOfPoints);
   Point3DVector transformed3DPoints(numberOfPoints);
 
