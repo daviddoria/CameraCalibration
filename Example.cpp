@@ -4,16 +4,16 @@
 
 #include "CameraCalibration.h"
 
-Point2DVector Create2DPoints();
-Point3DVector Create3DPoints();
+CameraCalibration::Point2DVector Create2DPoints();
+CameraCalibration::Point3DVector Create3DPoints();
 
 int main(int argc, char *argv[])
 {
 
-  Point2DVector points2D = Create2DPoints();
-  Point3DVector points3D = Create3DPoints();
+  CameraCalibration::Point2DVector points2D = Create2DPoints();
+  CameraCalibration::Point3DVector points3D = Create3DPoints();
 
-  Eigen::MatrixXd P = ComputeP_NormalizedDLT(points2D, points3D);
+  Eigen::MatrixXd P = CameraCalibration::ComputeP_NormalizedDLT(points2D, points3D);
 
   std::cout << "P: " << P << std::endl;
 
@@ -33,9 +33,9 @@ P:    -13.2592     71.7521    -5.93392     5.88788
 }
 
 
-Point2DVector Create2DPoints()
+CameraCalibration::Point2DVector Create2DPoints()
 {
-  Point2DVector points;
+  CameraCalibration::Point2DVector points;
   
   points.push_back(Eigen::Vector2d (950, 1058));
   points.push_back(Eigen::Vector2d (964, 1279));
@@ -52,9 +52,9 @@ Point2DVector Create2DPoints()
   //std::cout << "a.x: " << a.x() << std::endl;
 }
 
-Point3DVector Create3DPoints()
+CameraCalibration::Point3DVector Create3DPoints()
 {
-  Point3DVector points;
+  CameraCalibration::Point3DVector points;
 
   points.push_back(Eigen::Vector3d (10.2891, -1.16362, 1.30919));
   points.push_back(Eigen::Vector3d (10.2794, -1.25148, 0.550674));
