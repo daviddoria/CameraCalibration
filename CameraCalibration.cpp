@@ -85,9 +85,10 @@ Eigen::MatrixXd ComputeP_NormalizedDLT(const Point2DVector& points2D, const Poin
 //   std::cout << "Computed similarity transforms:" << std::endl;
 //   std::cout << "similarityTransform2D: " << similarityTransform2D << std::endl;
 //   std::cout << "similarityTransform3D: " << similarityTransform3D << std::endl;
-//   
-  Point2DVector transformed2DPoints(numberOfPoints);
-  Point3DVector transformed3DPoints(numberOfPoints);
+
+  // The (, Eigen::VectorXd()) below are only required when using gnu++0x, it seems to be a bug in Eigen
+  Point2DVector transformed2DPoints(numberOfPoints, Eigen::Vector2d());
+  Point3DVector transformed3DPoints(numberOfPoints, Eigen::Vector3d());
 
   for(unsigned int i = 0; i < numberOfPoints; ++i)
     {

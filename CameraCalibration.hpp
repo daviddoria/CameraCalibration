@@ -29,7 +29,8 @@ Eigen::MatrixXd ComputeNormalizationTransform(const typename std::vector<T,typen
   
   T centroid = Centroid<T>(points);
 
-  typename std::vector<T,typename Eigen::aligned_allocator<T> > centeredPoints(numberOfPoints);
+  // The (, T()) below is only required when using gnu++0x, it seems to be a bug in Eigen.
+  typename std::vector<T,typename Eigen::aligned_allocator<T> > centeredPoints(numberOfPoints, T());
 
   // Shift the origin of the points to the centroid
   for(unsigned int i = 0; i < numberOfPoints; ++i)
